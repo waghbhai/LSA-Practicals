@@ -1,0 +1,199 @@
+Practical No.1 :-
+
+Install DHCP Server in Ubuntu 16.04
+Dynamic Host Configuration Protocol (DHCP) is a network protocol that is used to enable host computers to be automatically assigned IP addresses and related network configurations from a server.
+
+Steps to install dhcp server in Ubuntu 16.04:-
+1.Open Terminal and run the following command to install DHCP server:
+sudo apt-get install isc-dhcp-server
+2.Now our dhcp server is installed now we have to configure it.
+3.The default configuration file of dhcp server is /etc/default/isc-dhcp-server.
+4.To Comfigure , edit /etc/default/isc-dhcp-server configuration file:
+sudo vi /etc/default/isc-dhcp-server.
+5.Assign the network interface:
+INTERFACES="eth0".
+6.If you have more than one interfaces, mention them with spaces, for exampleb eth0 eth1.
+7.Save and close the file.
+Then, edit dhcpd.conf file,
+sudo vi /etc/dhcp/dhcpd.conf.
+Modify it as shown below. Replace the domain name with your own values.
+Enter the domain name and domain-name-servers:
+option domain-name "tusharwagh.lan";
+option domain-name-servers ubuntuserver.tusharwagh.lan;
+8.Configuring DHCP in Ubuntu 16.04:-
+Then we must edit in the following
+sudo vi /etc/dhcp/dhcpd.conf
+There we must enter the respective dhcp values we must add the following lines inthe required configuration.
+subnet 192.168.0.1 netmask 255.255.255.0 {
+
+range 192.168.0.10 192.168.0.40;
+
+option domain-name-servers 8.8.8.8, 4.4.4.4;
+
+option domain-name "solvetic";
+
+option routers 192.168.0.1;
+
+option broadcast-address 192.168.0.255;
+
+default-lease-time 600;
+
+max-lease-time 7200;
+
+}
+9.Once these values are configured we will proceed to restart the isc-dhcp-server service using the following command:
+sudo systemctl restart isc-dhcp-server
+10.Start and stop the isc-dchp-server service
+The commands to start and stop this service are:
+Start service:-sudo systemctl start isc-dhcp-server
+Stop service:-sudo systemctl stop isc-dhcp-server
+
+
+
+
+
+Practical No.2 :-
+
+
+1st)How to add a user
+Theory:
+In Linux, a ‘useradd‘ command is a low-level utility that is used for adding/creating
+user accounts in Linux and other Unix-like operating systems. 
+
+Command:‘useradd‘
+
+Steps:
+Username: User login name used to login into system. It should be between 1 to 32 charcters long.
+Password: User password (or x character) stored in /etc/shadow file in encrypted format
+User ID (UID): Every user must have a User ID (UID) User Identification Number. 
+By default UID 0 is reserved for root user and UID’s ranging from 1-99 are reserved for other predefined accounts. 
+Further UID’s ranging from 100-999 are reserved for system accounts and groups.
+Group ID (GID): The primary Group ID (GID) Group Identification Number stored in /etc/group file.
+
+2th)Network Settings
+Theory:Computers are connected in a network to exchange information or resources each other. 
+Two or more computer connected through network media called computer network. 
+There are number of network devices or media are involved to form computer network. 
+Computer loaded with Linux Operating System can also be a part of network 
+whether it is small or large network by its multitasking and multiuser natures
+
+Commands:ifconfig,ping,hostname,root,netstat
+
+Steps:
+Assign a broadcast address: ip addr add broadcast 192.168. ...
+Delete the IP address assignment from a network interface: ip addr del 192.168. ...
+Assign an IP address using CIRD notation: ip addr add 192.168. ...
+Turn off/shut down a network interface: ip link set dev eth1 down.
+Turn on a network interface: ip link set dev eth1 up.
+
+3th)Change Ip Address to Static
+Theory:
+When manually changing your IP address, Linux automatically understands 
+that you want to change from using a DHCP server to static IP addressing.
+
+Command:
+ Content of /etc/network/interfaces
+
+iface eth0 inet static
+address <ip_address>
+netmask <network_mask>
+gateway <gateway_ip
+Then we have to edit the content of our interface file and add the following content:
+$ vim /etc/network/interfaces
+
+ Content of /etc/network/interfaces
+
+iface eth0 inet static
+address 192.168.178.32
+netmask 255.255.255.0
+gateway 192.168.178.1
+ For systemd hosts
+
+$ sudo systemctl restart networking.service
+
+ For pre-systemd hosts
+
+sudo /etc/init.d/networking restart
+$ ifconfig
+
+$ ip address
+
+
+4th)Disable IPv6 if not needed
+
+Command:
+Issue the command sysctl -w net.ipv6.conf.all.disable_ipv6=1
+Issue the command sysctl -w net.ipv6.conf.default.disable_ipv6=1
+
+Steps:
+1. Open a terminal window.
+2. Issue the command sudo nano /etc/sysctl.conf
+3. Add the following at the bottom of the file:
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+4. Save and close the file.
+5. Reboot the machine.
+
+5th)Configure Service
+
+Command:
+sudo systemctl enable [service_name]
+
+
+6th)Display the list of services which are runnning
+Theory:
+the systemctl command without any arguments, 
+it will display a list of all loaded systemd units 
+(read the systemd documentation for more information about systemd units)
+including services, showing their status (whether active or not).
+Command:
+ systemctl list-units --type=service --state=running 
+OR
+ systemctl --type=service --state=running
+
+7th)Stop and Turn offf ,auto start  settings for a service if you need it
+Commands:
+systemctl list-unit-files --type service -all
+
+systemctl start <service-name>
+
+systemctl stop <service-name>
+
+systemctl restart <service-name>
+
+systemctl status <service-name>
+Steps:
+1. List all services
+In order to manage the services, you first need to know what services are available on your system.
+You can use the systemd command to list all the services on your Linux system:
+
+2. Start a service
+To start a service in Linux, you just need to use its name like this:
+
+3. Stop a service
+To stop a systemd service, you can use the stop option of systemctl command:
+
+4. Restart a service
+To restart a service in Linux with systemd, you can use:
+
+5. Check the status of a service
+You can confirm that you have successfully executed a certain action by printing the service status:
+
+8th)Sudo Settings:
+Steps and Commands:
+
+sudo shutdown -r now
+Restart the system; run the shutdown command as root.
+
+sudo -u hope ls /home/otheruser/Documents
+List the contents of the /home/otheruser/Documents directory as the user hope.
+
+sudo -u hope -g otherusers mkdir /home/otheruser/Documents/newfiles
+Create a new directory with the mkdir command, as the user hope, with hope's current group set to otherusers. hope must be a member of the otherusers group.
+
+sudo -v
+Extend/reset sudo's automatic authentication timeout, allowing you to continue issuing sudo commands without entering a password.
+
+sudo -k
+"Kill" sudo authentication for the current user. The next sudo command will require a password.
