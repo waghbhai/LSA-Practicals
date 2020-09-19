@@ -1,0 +1,45 @@
+       Practical No.5
+
+
+
+
+Samba is an open-source software suite that runs on 
+Unix/Linux based platforms but is able to communicate
+with Windows clients like a native application.
+So Samba is able to provide this service by employing 
+the Common Internet File System (CIFS).
+
+Command to install samba:
+
+Install the samba package
+-> sudo apt-get update
+-> sudo apt-get install samba
+
+Create a directory for it to share
+-> mkdir /home/kali/sambashare/
+
+-> sudo nano /etc/samba/smb.conf
+
+Add this to the end of the file.
+[sambashare]
+    comment = Samba on Ubuntu
+    path = /home/username/sambashare
+    read only = no
+    browsable = yes
+
+Start/Restart the service
+-> sudo service smbd restart
+
+Allow samba through the firewall
+-> sudo ufw allow samba
+
+Setting up User Account
+-> sudo smbpasswd -a kali
+Note: Username must belong to the system account.
+
+For Windows, Open the file explorer and type \\ip-address\sambashare
+
+          OR
+          
+To test on your local machine
+   smb://ip-address/sambashare
